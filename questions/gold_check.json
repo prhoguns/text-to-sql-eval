@@ -1,0 +1,25 @@
+{
+  "unstable": [],
+  "prompt_sizes": {
+    "network": {
+      "schema_chars": 740,
+      "schema_rows_chars": 2102
+    },
+    "ics": {
+      "schema_chars": 2165,
+      "schema_rows_chars": 6381
+    },
+    "crime": {
+      "schema_chars": 544,
+      "schema_rows_chars": 1843
+    },
+    "identity": {
+      "schema_chars": 763,
+      "schema_rows_chars": 2144
+    },
+    "fraud": {
+      "schema_chars": 907,
+      "schema_rows_chars": 2392
+    }
+  }
+}

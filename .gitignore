@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+.pytest_cache/
+local.env
+results/run_all.log

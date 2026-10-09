@@ -1,0 +1,28 @@
+# Where each source repository's database and SQL live, relative to this repo.
+# Default layout: the five repos checked out next to this one, each with its data built by its own
+# scripts (see README). Override per dataset with EVALSQL_DB_<NAME> and EVALSQL_SQL_<NAME>.
+
+[crime]
+title = "Toronto police Major Crime Indicators"
+db = "../toronto-crime-sql-analytics/data/crime.duckdb"
+sql_dir = "../toronto-crime-sql-analytics/sql"
+
+[network]
+title = "CSE-CIC-IDS2018 network flows"
+db = "../network-intrusion-sql-analytics/data/analytics.duckdb"
+sql_dir = "../network-intrusion-sql-analytics/sql"
+
+[ics]
+title = "HAI 21.03 industrial control sensors"
+db = "../ics-anomaly-analytics/data/analytics.duckdb"
+sql_dir = "../ics-anomaly-analytics/sql"
+
+[fraud]
+title = "Feedzai Bank Account Fraud (Base)"
+db = "../bank-account-fraud-sql-analytics/data/analytics.duckdb"
+sql_dir = "../bank-account-fraud-sql-analytics/sql"
+
+[identity]
+title = "LANL 2017 Windows logons"
+db = "../identity-login-anomaly-analytics/data/analytics.duckdb"
+sql_dir = "../identity-login-anomaly-analytics/sql"
