@@ -121,17 +121,20 @@ def main() -> None:
     out += [f"- `{i}`: {questions[i]['question']}" for i in never]
     (RESULTS / "SUMMARY.md").write_text("\n".join(out) + "\n")
 
-    fig, ax = plt.subplots(figsize=(9, 4.5))
-    models = sorted({k[0] for k in keys})
-    width = 0.8 / len(models)
-    for i, m in enumerate(models):
-        vals = [
-            100 * sum(r["strict"] for r in runs[(m, c)]) / len(runs[(m, c)]) if (m, c) in runs else 0 for c in ORDER
-        ]
-        ax.bar([x + i * width for x in range(len(ORDER))], vals, width, label=m)
-    ax.set_xticks([x + width * (len(models) - 1) / 2 for x in range(len(ORDER))], ORDER)
-    ax.set(ylabel="Execution accuracy (%)", ylim=(0, 100), title="Text-to-SQL on 92 real analytics questions")
-    ax.legend()
+    fig, ax = plt.subplots(figsize=(10, 4.8))
+    labels = [f"{m.split(':')[1]}\n{c}" for m, c in keys]
+    xs = range(len(keys))
+    ran = [100 * sum(not r["error"] for r in runs[k]) / len(runs[k]) for k in keys]
+    right = [100 * sum(r["strict"] for r in runs[k]) / len(runs[k]) for k in keys]
+    ax.bar([x - 0.2 for x in xs], ran, 0.4, label="query runs without error", color="#9bb7d4")
+    ax.bar([x + 0.2 for x in xs], right, 0.4, label="query returns the right answer", color="#1f4e79")
+    ax.set_xticks(list(xs), labels, fontsize=8)
+    ax.set(
+        ylabel="% of 92 questions",
+        ylim=(0, 100),
+        title="Runnable is not the same as right: local models on 92 real analytics questions",
+    )
+    ax.legend(loc="upper left")
     fig.tight_layout()
     fig.savefig(RESULTS / "accuracy.png", dpi=150)
     print(re.sub(r"\*\*", "", "\n".join(out[: 4 + len(keys) + 2])))

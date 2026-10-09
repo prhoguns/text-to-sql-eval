@@ -56,7 +56,8 @@ def chat(model: str, messages: list[dict], num_ctx: int = 4096) -> Reply:
             "messages": messages,
             "stream": False,
             # Deterministic decoding, so a rerun reproduces the same queries.
-            "options": {"temperature": 0, "seed": 7, "num_ctx": num_ctx},
+            # num_predict caps runaway answers: a 7B model can loop on one question until the HTTP timeout.
+            "options": {"temperature": 0, "seed": 7, "num_ctx": num_ctx, "num_predict": 1024},
         },
         timeout=900,
     )

@@ -14,6 +14,8 @@ import argparse
 import json
 from functools import cache
 
+import requests
+
 from evalsql import db, llm
 from evalsql.compare import compare
 from evalsql.questions import load
@@ -63,7 +65,10 @@ def grade(q: dict, model: str, condition: str) -> dict:
     if base and "reply" in base:
         reply = llm.Reply(base["reply"], base["seconds"], base["prompt_tokens"], base["output_tokens"])
     else:
-        reply = llm.chat(model, messages)
+        try:
+            reply = llm.chat(model, messages)
+        except requests.RequestException as e:  # a hung model is a failed answer, not a crashed run
+            reply = llm.Reply(f"-- model error: {type(e).__name__}", 900.0, 0, 0)
     sql = llm.extract_sql(reply.text)
     rows, err = execute(q["dataset"], sql)
     seconds, tokens, repaired = reply.seconds, reply.output_tokens, False
@@ -72,7 +77,10 @@ def grade(q: dict, model: str, condition: str) -> dict:
             {"role": "assistant", "content": reply.text},
             {"role": "user", "content": llm.repair_prompt(sql, err)},
         ]
-        second = llm.chat(model, messages)
+        try:
+            second = llm.chat(model, messages)
+        except requests.RequestException as e:
+            second = llm.Reply(f"-- model error: {type(e).__name__}", 900.0, 0, 0)
         sql, repaired = llm.extract_sql(second.text), True
         rows, err = execute(q["dataset"], sql)
         seconds, tokens = seconds + second.seconds, tokens + second.output_tokens
