@@ -65,7 +65,7 @@ What this shows:
      and quietly returned nothing.
    - 11 had the wrong logic.
    - 4 had SQL errors.
-4. **Strict grading undercounts, but not by much.** In the same review, 4 of the 25 failures were
+4. **Strict grading undercounts, but the conclusion holds.** In the same review, 4 of the 25 failures were
    defensible answers in a different shape: a fraction instead of a percentage, an overall figure instead
    of a per-day one. About one failure in six, so a lenient score would be roughly 15–20%, not 1–2%.
    I report the strict number and give the review, rather than re-grade by hand.
@@ -77,7 +77,7 @@ Limits:
 
 The obvious next condition is a data dictionary in the prompt, like the guide the
 [Toronto data MCP server](https://github.com/prhoguns/toronto-data-mcp) gives an assistant. That turns
-row 3 into something the model can know, rather than guess.
+point 3 into something the model can know, rather than guess.
 
 ## Reproduce
 
